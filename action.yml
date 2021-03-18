@@ -1,0 +1,35 @@
+name: 'Test Flutter'
+description: 'Test a Flutter project'
+inputs:
+  flutter-version:  
+    description: 'The version of Flutter to use to test.'
+    required: true
+    default: 'stable'
+  generate-coverage:
+    description: 'Whether or not to generate code coverage.'
+    required: false
+    default: false
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v1
+      with:
+        flutter-version: ${{ inputs.version }}
+    - name: Check versions
+      run: |
+          dart --version
+          flutter --version
+      shell: bash
+    - name: Setup Flutter
+      run: |
+        flutter pub get
+      shell: bash
+    - name: Test with Coverage
+      if: ${{ inputs.generate-coverage == 'true' }}
+      run: flutter test --coverage
+      shell: bash
+    - name: Test
+      if: ${{ inputs.generate-coverage == 'false' }}
+      run: flutter test --coverage
+      shell: bash
