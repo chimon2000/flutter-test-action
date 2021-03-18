@@ -9,13 +9,13 @@ inputs:
     description: 'Whether or not to generate code coverage.'
     required: false
     default: false
+  setup-scripts:
+    description: 'Scripts to run before testing.'
+    required: false
 runs:
   using: "composite"
   steps:
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v1
-      with:
-        flutter-version: ${{ inputs.version }}
+    - ${{ inputs.setup-scripts }}
     - name: Check versions
       run: |
           dart --version
